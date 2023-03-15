@@ -95,14 +95,15 @@ CREATE DATABASE `tets` CHARACTER SET 'utf8mb3' COLLATE 'utf8_bin';
 ```
 
 + 总结:
-  1. database的创建 `CREATE DATABASE <DATABAS名称>`
-  2. database的查询`SHOW DATABASES`
-  3. database的删除`drop database <DATABASE名称>`
-  4. 使用database `use <DATABASE名称>`
+  1. database的创建: `CREATE DATABASE <DATABAS名称>`
+  2. database的查询:`SHOW DATABASES`
+  3. database的删除:`drop database <DATABASE名称>`
+  4. 使用database:  `use <DATABASE名称>`
 
 + **注意**: 
   1. <mark>Mysql在连接后进入命令行时, 必须以 分号 `;`来结尾,否则会默认认为这条语句没有结束,从而不会执行</mark>
   2. SQL 语句不区分大小写,但最好以分号`;`来结尾(没有IDE的提示,很容易忘记)
+  3. 数据库中,所有的库名,表名,字段名等,都必须为 `xxx_xxx`连接符形式,不能为驼峰形式
 
 ## 2.3 drop 命令删除数据库
 
@@ -135,6 +136,13 @@ mysql>
 ```
 
 执行以上命令后，你就已经成功选择了 RUNOOB 数据库，在后续的操作中都会在 RUNOOB 数据库中执行。
+
+database的总结:
+
+1. database的创建: `CREATE DATABASE <DATABAS名称>`
+2. database的查询:`SHOW DATABASES`
+3. database的删除:`drop database <DATABASE名称>`
+4. 使用database:  `use <DATABASE名称>`
 
 # 3. MySQL 数据类型
 
@@ -216,6 +224,10 @@ BLOB 是一个二进制大对象，可以容纳可变数量的数据。有 4 种
 
 # 4. MySQL创建数据表
 
+1. 创建数据表:`CREATE TABLE IF NOT EXISTS <表名不能为驼峰>`
+2. 展示数据表: `desc <表名>`
+3. 删除数据表:`DROP TABLE <表名>`
+
 创建MySQL数据表需要以下信息：
 
 - 表名
@@ -226,6 +238,60 @@ BLOB 是一个二进制大对象，可以容纳可变数量的数据。有 4 种
 
 以下为创建MySQL数据表的SQL通用语法：
 
-```
+```sql
 CREATE TABLE table_name (column_name column_type);
 ```
+
+```sql
+CREATE TABLE IF NOT EXISTS `runoob_tbl`(
+   `runoob_id` INT UNSIGNED AUTO_INCREMENT,
+   `runoob_title` VARCHAR(100) NOT NULL,
+   `runoob_author` VARCHAR(40) NOT NULL,
+   `submission_date` DATE,
+   PRIMARY KEY ( `runoob_id` )
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+```
+
+- 如果你不想字段为 **NULL** 可以设置字段的属性为 **NOT NULL**， 在操作数据库时如果输入该字段的数据为**NULL** ，就会报错。(是否必填)
+- AUTO_INCREMENT定义列为自增的属性，一般用于主键，数值会自动加1。
+- PRIMARY KEY关键字用于定义列为主键。 您可以使用多列来定义主键，列间以逗号分隔。
+- ENGINE 设置存储引擎，CHARSET 设置编码。
+
+## 通过命令提示符创建表
+
+通过 mysql> 命令窗口可以很简单的创建MySQL数据表。你可以使用 SQL 语句 **CREATE TABLE** 来创建数据表。
+
+### 实例
+
+以下为创建数据表 runoob_tbl 实例:
+
+```
+root@host# mysql -u root -p
+Enter password:*******
+mysql> use RUNOOB;
+Database changed
+mysql> CREATE TABLE runoob_tbl(
+   -> runoob_id INT NOT NULL AUTO_INCREMENT,
+   -> runoob_title VARCHAR(100) NOT NULL,
+   -> runoob_author VARCHAR(40) NOT NULL,
+   -> submission_date DATE,
+   -> PRIMARY KEY ( runoob_id )
+   -> )ENGINE=InnoDB DEFAULT CHARSET=utf8;
+Query OK, 0 rows affected (0.16 sec)
+mysql>
+```
+
+**注意：**MySQL命令终止符为分号 **;** 。
+
+**注意：** **->** 是换行符标识，不要复制。
+
+**总结**:
+
+1. 创建数据表:`CREATE TABLE IF NOT EXISTS <表名不能为驼峰>`
+2. 展示数据表结构: `desc <表名>`
+3. 删除数据表:`DROP TABLE <表名>`
+
+
+
+## 5. 插入查询数据
+
