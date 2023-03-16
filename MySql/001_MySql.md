@@ -94,12 +94,6 @@ mysql> create DATABASE RUNOOB;
 CREATE DATABASE `tets` CHARACTER SET 'utf8mb3' COLLATE 'utf8_bin';
 ```
 
-+ 总结:
-  1. database的创建: `CREATE DATABASE <DATABAS名称>`
-  2. database的查询:`SHOW DATABASES`
-  3. database的删除:`drop database <DATABASE名称>`
-  4. 使用database:  `use <DATABASE名称>`
-
 + **注意**: 
   1. <mark>Mysql在连接后进入命令行时, 必须以 分号 `;`来结尾,否则会默认认为这条语句没有结束,从而不会执行</mark>
   2. SQL 语句不区分大小写,但最好以分号`;`来结尾(没有IDE的提示,很容易忘记)
@@ -117,15 +111,11 @@ drop database <数据库名>;
 
 在你连接到 MySQL 数据库后，可能有多个可以操作的数据库，所以你需要选择你要操作的数据库。
 
-------
-
-## 从命令提示窗口中选择MySQL数据库
+从命令提示窗口中选择MySQL数据库
 
 在 mysql> 提示窗口中可以很简单的选择特定的数据库。你可以使用SQL命令来选择指定的数据库。
 
-### 实例
-
-以下实例选取了数据库 RUNOOB:
+实例以下实例选取了数据库 RUNOOB:
 
 ```
 [root@host]# mysql -u root -p
@@ -137,7 +127,7 @@ mysql>
 
 执行以上命令后，你就已经成功选择了 RUNOOB 数据库，在后续的操作中都会在 RUNOOB 数据库中执行。
 
-database的总结:
+## database的总结:
 
 1. database的创建: `CREATE DATABASE <DATABAS名称>`
 2. database的查询:`SHOW DATABASES`
@@ -285,13 +275,86 @@ mysql>
 
 **注意：** **->** 是换行符标识，不要复制。
 
-**总结**:
+## **总结**:
 
 1. 创建数据表:`CREATE TABLE IF NOT EXISTS <表名不能为驼峰>`
 2. 展示数据表结构: `desc <表名>`
 3. 删除数据表:`DROP TABLE <表名>`
 
+# 5. 插入查询数据
 
+# 1. MySQL 插入数据 `INSERT INTO`
 
-## 5. 插入查询数据
+MySQL 表中使用 **INSERT INTO** SQL语句来插入数据。
+
+你可以通过 mysql> 命令提示窗口中向数据表中插入数据，或者通过PHP脚本来插入数据。
+
+### 语法
+
+以下为向MySQL数据表插入数据通用的 **INSERT INTO** SQL语法：
+
+```sh
+INSERT INTO table_name ( field1, field2,...fieldN )
+                       VALUES
+                       ( value1, value2,...valueN );
+```
+
+如果数据是字符型，必须使用单引号或者双引号，如："value"。
+
+```sh
+mysql> use testdatabase
+    -> ;
+Database changed
+mysql> INSERT INTO student_table
+    -> (student_name,student_age,student_date)
+    -> VALUES
+    -> ("李嗣业",23,NOW());
+Query OK, 1 row affected (0.03 sec)
+
+mysql> INSERT INTO student_table
+    (student_name,student_age,student_date)
+    VALUES
+    ("宇文泰",18,"2023-03-16 23:44:55");
+Query OK, 1 row affected (0.02 sec)
+```
+
+# MySQL 查询数据 `SELECT`
+
+MySQL 数据库使用SQL SELECT语句来查询数据。
+
+你可以通过 mysql> 命令提示窗口中在数据库中查询数据，或者通过PHP脚本来查询数据。
+
+### 语法
+
+以下为在MySQL数据库中查询数据通用的 SELECT 语法：
+
+```
+SELECT column_name,column_name
+FROM table_name
+[WHERE Clause]
+[LIMIT N][ OFFSET M]
+```
+
+- 查询语句中你可以使用一个或者多个表，表之间使用逗号(,)分割，并使用WHERE语句来设定查询条件。
+- SELECT 命令可以读取一条或者多条记录。
+- 你可以使用星号（*）来代替其他字段，SELECT语句会返回表的所有字段数据
+- 你可以使用 WHERE 语句来包含任何条件。
+- 你可以使用 LIMIT 属性来设定返回的记录数。
+- 你可以通过OFFSET指定SELECT语句开始查询的数据偏移量。默认情况下偏移量为0。
+
+## 总结:
+
+1. 插入数据表
+
+   ```shell
+   INSERT INTO table_name ( field1, field2,...fieldN )
+                          VALUES
+                          ( value1, value2,...valueN );
+   ```
+
+   
+
+2. 读取数据表 `select * from <table_name>`;
+
+# 6. MySQL WHERE 子句
 
