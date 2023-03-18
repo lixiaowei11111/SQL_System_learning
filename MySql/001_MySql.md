@@ -133,6 +133,7 @@ mysql>
 2. database的查询:`SHOW DATABASES`
 3. database的删除:`drop database <DATABASE名称>`
 4. 使用database:  `use <DATABASE名称>`
+5. 列出当前 use的databse下的 所有表:`SHOW TABLES;`
 
 # 3. MySQL 数据类型
 
@@ -277,13 +278,16 @@ mysql>
 
 ## **总结**:
 
-1. 创建数据表:`CREATE TABLE IF NOT EXISTS <表名不能为驼峰>`
-2. 展示数据表结构: `desc <表名>`
-3. 删除数据表:`DROP TABLE <表名>`
+1. 创建数据表:`CREATE TABLE IF NOT EXISTS 表名且不能为驼峰`
+2. 展示数据表结构: `desc 表名`
+3. 删除数据表:`DROP TABLE 表名`
+4. 重命名表名称: `RENAME TABLE 现有表名称 TO 新表名称;`
+5. 给指定表添加字段: `ALTER TABLE 表名 ADD 字段名称 数据类型 [约束条件];`
+6. 给表中字段重命名:`ALTER TABLE 表名 CHANGE 现有字段名 新字段名 [约束条件] ;`
 
 # 5. 插入查询数据
 
-# 1. MySQL 插入数据 `INSERT INTO`
+## 1. MySQL 插入数据 `INSERT INTO`
 
 MySQL 表中使用 **INSERT INTO** SQL语句来插入数据。
 
@@ -318,7 +322,7 @@ mysql> INSERT INTO student_table
 Query OK, 1 row affected (0.02 sec)
 ```
 
-# MySQL 查询数据 `SELECT`
+## 2. MySQL 查询数据 `SELECT`
 
 MySQL 数据库使用SQL SELECT语句来查询数据。
 
@@ -358,3 +362,198 @@ FROM table_name
 
 # 6. MySQL WHERE 子句
 
+我们知道从 MySQL 表中使用 SQL SELECT 语句来读取数据。
+
+如需有条件地从表中选取数据，可将 WHERE 子句添加到 SELECT 语句中。
+
+### 语法
+
+以下是 SQL SELECT 语句使用 WHERE 子句从数据表中读取数据的通用语法：
+
+```sql
+SELECT field1, field2,...fieldN FROM table_name1, table_name2...
+[WHERE condition1 [AND [OR]] condition2.....
+```
+
+- 查询语句中你可以使用一个或者多个表，表之间使用逗号**,** 分割，并使用WHERE语句来设定查询条件。
+- 你可以在 WHERE 子句中指定任何条件。
+- 你可**以使用 AND 或者 OR 指定一个或多个条件**。
+- WHERE 子句也可以运用于 SQL 的 DELETE 或者 UPDATE 命令。
+- WHERE 子句类似于程序语言中的 if 条件，根据 MySQL 表中的字段值来读取指定的数据。
+
+以下为**操作符列表，可用于 WHERE 子句中**。
+
+下表中实例假定 A 为 10, B 为 20
+
+| 操作符 | 描述                                                         | 实例                 |
+| :----- | :----------------------------------------------------------- | :------------------- |
+| =      | 等号，检测两个值是否相等，如果相等返回true                   | (A = B) 返回false。  |
+| <>, != | 不等于，检测两个值是否相等，如果不相等返回true               | (A != B) 返回 true。 |
+| >      | 大于号，检测左边的值是否大于右边的值, 如果左边的值大于右边的值返回true | (A > B) 返回false。  |
+| <      | 小于号，检测左边的值是否小于右边的值, 如果左边的值小于右边的值返回true | (A < B) 返回 true。  |
+| >=     | 大于等于号，检测左边的值是否大于或等于右边的值, 如果左边的值大于或等于右边的值返回true | (A >= B) 返回false。 |
+| <=     | 小于等于号，检测左边的值是否小于或等于右边的值, 如果左边的值小于或等于右边的值返回true | (A <= B) 返回 true。 |
+
+如果我们想在 MySQL 数据表中读取指定的数据，WHERE 子句是非常有用的。
+
+使用主键来作为 WHERE 子句的条件查询是非常快速的。
+
+如果给定的条件在表中没有任何匹配的记录，那么查询不会返回任何数据。
+
+
+
+## 从命令提示符中读取数据
+
+我们将在SQL SELECT语句使用WHERE子句来读取MySQL数据表 runoob_tbl 中的数据：
+
+实例
+
+`student_table`:
+
+`select * from student_table;`
+
+```sql
++------------+--------------+-------------+---------------------+
+| student_id | student_name | student_age | student_date        |
++------------+--------------+-------------+---------------------+
+|          1 | 李嗣业       |          23 | 2023-03-16 23:43:29 |
+|          2 | 宇文泰       |          18 | 2023-03-16 23:44:55 |
+|          3 | 宇文邕       |          33 | 1576-03-17 15:08:22 |
++------------+--------------+-------------+---------------------+
+```
+
+
+
+以下实例将读取 student_table 表中 student_age 字段值小于20 的所有记录：
+
+```sql
+select * from student_table where student_age<20;
+```
+
+输出结果:
+
+```sql
++------------+--------------+-------------+---------------------+
+| student_id | student_name | student_age | student_date        |
++------------+--------------+-------------+---------------------+
+|          2 | 宇文泰       |          18 | 2023-03-16 23:44:55 |
++------------+--------------+-------------+---------------------+
+1 row in set (0.03 sec)
+```
+
+MySQL 的 WHERE 子句的字符串比较是不区分大小写的。 你可以**使用 BINARY 关键字来设定 WHERE 子句的字符串比较是区分大小写的。**
+
+如下实例:
+
+
+
+## 总结:
+
+1. where的基础语法: `SELECT field1, field2,...fieldN FROM table_name1, table_name2...[WHERE condition1 [AND [OR]] condition2...`
+2. BINARY 使得where子句区分大小写;
+
+
+
+# 7. UPDATE  | 更新
+
+如果我们需要修改或更新 MySQL 中的数据，我们可以使用 SQL UPDATE 命令来操作。
+
+### 语法
+
+以下是 UPDATE 命令修改 MySQL 数据表数据的通用 SQL 语法：
+
+```shell
+UPDATE 表名 SET field1=new-value1, field2=new-value2
+[WHERE Clause]
+```
+
+- 你可以同时更新一个或多个字段。
+- 你可以在 WHERE 子句中指定任何条件。
+- 你可以在一个单独表中同时更新数据。
+
+当你需要更新数据表中指定行的数据时 WHERE 子句是非常有用的。
+
+```shell
+mysql> UPDATE HERO_TABLE SET dynasty="周",hero_age=50 where hero_id=2;
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from hero_table;
++---------+-----------+----------+---------------------+---------+
+| hero_id | hero_name | hero_age | birth_date          | dynasty |
++---------+-----------+----------+---------------------+---------+
+|       1 | 李嗣业    |       23 | 2023-03-16 23:43:29 | NULL    |
+|       2 | 宇文泰    |       50 | 2023-03-16 23:44:55 | 周      |
+|       3 | 宇文邕    |       33 | 1576-03-17 15:08:22 | NULL    |
++---------+-----------+----------+---------------------+---------+
+3 rows in set (0.10 sec)
+```
+
+## 总结:
+
+1. UPDATE的基础用法: `UPDATE 表名 SET field1=new-value1, field2=new-value2[WHERE Clause]`
+
+# 8. DELETE 语句
+
+可以使用 SQL 的 DELETE FROM 命令来**删除** MySQL 数据表中的记录。
+
+### 语法
+
+以下是 SQL DELETE 语句从 MySQL 数据表中删除数据的通用语法：
+
+```
+DELETE FROM table_name [WHERE Clause]
+```
+
+- 如果没有指定 WHERE 子句，MySQL 表中的所有记录将被删除。
+- 你可以在 WHERE 子句中指定任何条件
+- 您可以在单个表中一次性删除记录。
+
+当你想删除数据表中指定的记录时 WHERE 子句是非常有用的。
+
+## 从命令行中删除数据
+
+这里我们将在 SQL DELETE 命令中使用 WHERE 子句来删除 MySQL 数据表 `hero_table` 所选的数据。
+
+### 实例
+
+以下实例将删除`hero_table` 表中 hero_id 为4 的记录：
+
+```sql
+SELECT * FROM hero_table;
+
+DELETE FROM hero_table WHERE hero_id=4;
+```
+
+
+
+# 9. LIKE 子句
+
+我们知道在 MySQL 中使用 SQL SELECT 命令来读取数据， 同时我们可以在 SELECT 语句中使用 WHERE 子句来获取指定的记录。
+
+WHERE 子句中可以使用等号 **=** 来设定获取数据的条件，如 "runoob_author = 'RUNOOB.COM'"。
+
+但是有时候我们需要获取 runoob_author 字段含有 "COM" 字符的所有记录，这时我们就需要在 WHERE 子句中使用 SQL LIKE 子句。
+
+
+
+**SQL LIKE 子句中使用百分号 %字符来表示任意字符，类似于UNIX或正则表达式中的星号 ***。
+
+**如果没有使用百分号 %, LIKE 子句与等号 = 的效果是一样的。**
+
+### 语法
+
+以下是 SQL SELECT 语句使用 LIKE 子句从数据表中读取数据的通用语法：
+
+```
+SELECT field1, field2,...fieldN 
+FROM table_name
+WHERE field1 LIKE condition1 [AND [OR]] filed2 = 'somevalue'
+```
+
+- 你可以在 WHERE 子句中指定任何条件。
+- 你可以在 WHERE 子句中使用LIKE子句。
+- 你可以使用LIKE子句代替等号 **=**。
+- LIKE 通常与 **%** 一同使用，类似于一个元字符的搜索。
+- 你可以使用 AND 或者 OR 指定一个或多个条件。
+- 你可以在 DELETE 或 UPDATE 命令中使用 WHERE...LIKE 子句来指定条件。
