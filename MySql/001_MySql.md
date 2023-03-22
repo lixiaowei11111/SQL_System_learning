@@ -557,3 +557,52 @@ WHERE field1 LIKE condition1 [AND [OR]] filed2 = 'somevalue'
 - LIKE 通常与 **%** 一同使用，类似于一个元字符的搜索。
 - 你可以使用 AND 或者 OR 指定一个或多个条件。
 - 你可以在 DELETE 或 UPDATE 命令中使用 WHERE...LIKE 子句来指定条件。
+
+## 在命令提示符中使用 LIKE 子句
+
+以下我们将在 SQL SELECT 命令中使用 WHERE...LIKE 子句来从MySQL数据表`hero_table` 中读取数据。
+
+### 实例
+
+以下是我们将 `hero_table` 表中获取`hero_name` 字段中以`宇文` 为姓氏的的所有记录：
+
+```shell
+mysql> SELECT * FROM hero_table WHERE hero_name LIKE "宇文%";
++---------+-----------+----------+---------------------+---------+
+| hero_id | hero_name | hero_age | birth_date          | dynasty |
++---------+-----------+----------+---------------------+---------+
+|       2 | 宇文泰    |       50 | 2023-03-16 23:44:55 | 周      |
+|       3 | 宇文邕    |       33 | 1576-03-17 15:08:22 | NULL    |
++---------+-----------+----------+---------------------+---------+
+2 rows in set (0.10 sec)
+```
+
+
+
+# 10. UNION 操作符
+
+### 描述
+
+MySQL UNION 操作符用于**连接两个以上的 SELECT 语句的结果组合到一个结果集合中。多个 SELECT 语句会删除重复的数据。**
+
+### 语法
+
+MySQL UNION 操作符语法格式：
+
+```
+SELECT expression1, expression2, ... expression_n
+FROM tables
+[WHERE conditions]
+UNION [ALL | DISTINCT]
+SELECT expression1, expression2, ... expression_n
+FROM tables
+[WHERE conditions];
+```
+
+### 参数
+
+- **expression1, expression2, ... expression_n**: 要检索的列。
+- **tables:** 要检索的数据表。
+- **WHERE conditions:** 可选， 检索条件。
+- **DISTINCT:** 可选，删除结果集中重复的数据。默认情况下 UNION 操作符已经删除了重复数据，所以 DISTINCT 修饰符对结果没啥影响。
+- **ALL:** 可选，返回所有结果集，包含重复数据。
