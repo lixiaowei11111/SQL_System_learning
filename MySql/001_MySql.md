@@ -606,3 +606,125 @@ FROM tables
 - **WHERE conditions:** 可选， 检索条件。
 - **DISTINCT:** 可选，删除结果集中重复的数据。默认情况下 UNION 操作符已经删除了重复数据，所以 DISTINCT 修饰符对结果没啥影响。
 - **ALL:** 可选，返回所有结果集，包含重复数据。
+
+### 演示数据库
+
+```bash
+mysql> SELECT * FROM APPS;
++----+----------+-------------------------+---------+
+| id | app_name | url                     | country |
++----+----------+-------------------------+---------+
+|  1 | QQ APP   | http://im.qq.com/       | CN      |
+|  2 | QQ APP   | http://im.qq.com/       | CN      |
+|  3 | 微博 APP | http://weibo.com/       | CN      |
+|  4 | 淘宝 APP | https://www.taobao.com/ | CN      |
+|  5 | QQ APP   | http://im.qq.com/       | CN      |
+|  6 | 微博 APP | http://weibo.com/       | CN      |
+|  7 | 淘宝 APP | https://www.taobao.com/ | CN      |
++----+----------+-------------------------+---------+
+7 rows in set (0.04 sec)
+mysql> SELECT * FROM websites;
++----+---------------+---------------------------+-------+---------+
+| id | site_name     | url                       | alexa | country |
++----+---------------+---------------------------+-------+---------+
+|  1 | Google        | https://www.google.cm/    |     1 | USA     |
+|  2 | 淘宝          | https://www.taobao.com/   |    13 | CN      |
+|  3 | 菜鸟教程      | http://www.runoob.com/    |  4689 | CN      |
+|  4 | 微博          | http://weibo.com/         |    20 | CN      |
+|  5 | FaceBook      | https://www.facebook.com/ |     3 | USA     |
+|  6 | StackOverflow | http://stackoverflow.com/ |     0 | IND     |
++----+---------------+---------------------------+-------+---------+
+6 rows in set (0.09 sec)
+```
+
+### 1. SQL UNION 实例
+
+下面的 SQL 语句从 "Websites" 和 "apps" 表中选取所有**不同的**country（只有不同的值）：
+
+```bash
+mysql> SELECT country FROM websites
+
+UNION
+# ALL | DISTINCT all 不去重,distinct 去重,默认为 distinct
+
+SELECT country FROM apps
+
+ORDER BY country;
++---------+
+| country |
++---------+
+| CN      |
+| IND     |
+| USA     |
++---------+
+3 rows in set (0.12 sec)
+```
+
+**注释：**UNION 不能用于列出两个表中所有的country。如果一些网站和APP来自同一个国家，每个国家只会列出一次。UNION 只会选取不同的值。请使用 UNION ALL 来选取重复的值！
+
+### 2. SQL UNION ALL 实例
+
+下面的 SQL 语句使用 UNION ALL 从 "Websites" 和 "apps" 表中选取**所有的**country（也有重复的值）：
+
+```bash
+mysql> SELECT country FROM websites
+
+UNION ALL
+SELECT country FROM apps
+
+ORDER BY country;
++---------+
+| country |
++---------+
+| CN      |
+| CN      |
+| CN      |
+| CN      |
+| CN      |
+| CN      |
+| CN      |
+| CN      |
+| CN      |
+| CN      |
+| IND     |
+| USA     |
+| USA     |
++---------+
+13 rows in set (0.14 sec)
+```
+
+### 3. 带有 WHERE 的 SQL UNION ALL
+
+下面的 SQL 语句使用 UNION ALL 从 "Websites" 和 "apps" 表中选取**所有的**中国(CN)的数据（也有重复的值）：
+
+```bash
+mysql> SELECT country,site_name FROM websites
+WHERE country="CN"
+
+UNION ALL
+
+SELECT country,app_name FROM apps
+WHERE country="CN"
+
+ORDER BY country;
++---------+-----------+
+| country | site_name |
++---------+-----------+
+| CN      | 淘宝      |
+| CN      | 菜鸟教程  |
+| CN      | 微博      |
+| CN      | QQ APP    |
+| CN      | QQ APP    |
+| CN      | 微博 APP  |
+| CN      | 淘宝 APP  |
+| CN      | QQ APP    |
+| CN      | 微博 APP  |
+| CN      | 淘宝 APP  |
++---------+-----------+
+10 rows in set (0.11 sec)
+```
+
+
+
+# 11 MySQL 排序(`ORDER BY`)
+
